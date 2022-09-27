@@ -1,0 +1,42 @@
+
+<form [formGroup]="articleForm" >
+  <div>
+    <label for="title">Title</label>
+    <input formControlName="title" type="text" name="search" >
+  </div>
+  <div class="col-25">
+    <label for="subject">Text</label>
+  </div>
+  <div>
+    <textarea formControlName="text" id="text"  placeholder="Write something.." ></textarea>
+  </div>
+  <button *ngIf="!isEdit" (click)="createArticle()" [disabled]="articleForm.invalid"  type="submit" class="add">add</button>
+
+  <button *ngIf="isEdit"   (click)="updateArticle()" type="submit" class="add">update</button>
+</form>
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Title</th>
+      <th>Text</th>
+      <th>Image</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let art of adminArticle; index as i">
+          <td>{{i+1}}</td>
+          <td>{{art.title}}</td>
+          <td>{{art.text | slice:0:50}}...</td>
+          <td><img [src]="art.image" width="80px"></td>
+          <td>
+
+            <button (click)="editArticle(art)" type="submit" class="button edit">edit</button>
+            <button (click)="deleteArticle(art)" type="submit" class="button delete">delete</button>
+
+          </td>
+
+      </tr>
+  </tbody>
+</table>

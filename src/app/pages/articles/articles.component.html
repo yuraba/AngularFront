@@ -1,0 +1,34 @@
+<!--<div class="containerr">-->
+<!--  <div class="row">-->
+    <div class="card" *ngFor="let atr of userArticles">
+<!--      <img [src]="atr.image"  style="width:20%; height: 100px;">-->
+
+<!--      <div class="container">-->
+<!--        <h4><b>{{atr.title}}</b></h4>-->
+
+<!--        <button class="butt" style="vertical-align:middle"><span>Читати</span></button>-->
+
+<!--      </div>-->
+      <mat-card class="example-card">
+        <mat-card-header>
+          <div mat-card-avatar class="example-header-image"></div>
+          <mat-card-title>{{atr.title}}</mat-card-title>
+          <mat-card-subtitle></mat-card-subtitle>
+        </mat-card-header>
+        <img class="mat-card-image" [src]="atr.image" alt="Photo of a Shiba Inu">
+        <mat-card-content>
+          <p>
+            {{atr.text}}
+          </p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon">
+            <mat-icon>favorite</mat-icon>
+          </button>
+          <button class="mat-button">LIKE</button>
+          <button class="mat-button">SHARE</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+<!--  </div>-->
+<!--</div>-->
