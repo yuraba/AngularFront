@@ -1,15 +1,27 @@
-
+<div class="wrapper">
 <form [formGroup]="articleForm" >
   <div>
     <label for="title">Title</label>
-    <input formControlName="title" type="text" name="search" >
+    <input formControlName="title" type="text" name="search" [value]="title" >
   </div>
   <div class="col-25">
     <label for="subject">Text</label>
   </div>
   <div>
-    <textarea formControlName="text" id="text"  placeholder="Write something.." ></textarea>
+    <textarea formControlName="body" id="text"  placeholder="Write something.." [value]="body" ></textarea>
   </div>
+  <form action="/action_page.php">
+
+    <div *ngIf="!imageStatus">
+      <input (change)="uploadFile($event)" type="file" id="myFile" name="filename">
+
+      <mat-progress-bar mode="determinate" [style.width]="(uploadPercent | async)"></mat-progress-bar>
+    </div>
+    <div *ngIf="imageStatus">
+      <img width="100px" [src]="image" alt="" >
+      <button (click)="deleteFile()" type="submit" class="button delete">delete</button>
+    </div>
+  </form>
   <button *ngIf="!isEdit" (click)="createArticle()" [disabled]="articleForm.invalid"  type="submit" class="add">add</button>
 
   <button *ngIf="isEdit"   (click)="updateArticle()" type="submit" class="add">update</button>
@@ -28,7 +40,7 @@
       <tr *ngFor="let art of adminArticle; index as i">
           <td>{{i+1}}</td>
           <td>{{art.title}}</td>
-          <td>{{art.text | slice:0:50}}...</td>
+          <td>{{art.body | slice:0:50}}...</td>
           <td><img [src]="art.image" width="80px"></td>
           <td>
 
@@ -40,3 +52,4 @@
       </tr>
   </tbody>
 </table>
+</div>

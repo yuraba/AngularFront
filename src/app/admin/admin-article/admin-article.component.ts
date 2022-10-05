@@ -3,6 +3,8 @@ import {DiscountService} from "../../shared/services/article/discount.service";
 import {IArticle} from "../../shared/models/article/article.models";
 import {ToastrService} from "ngx-toastr";
 import {FormBuilder, FormGroup, Validator, Validators} from "@angular/forms";
+import {AngularFireStorage} from "@angular/fire/compat/storage";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-admin-article',
@@ -32,15 +34,19 @@ export class AdminArticleComponent implements OnInit {
     "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" +
     "+EkkiBVPSC2jSSTZoXJJJAP/9k=";
   title: string = '';
-  text: string = '';
+  body: string = '';
   isEdit = false;
   articleId: number = 0;
+  image: string = '';
+  public uploadPercent: Observable<number> | undefined | null;
+  imageStatus: boolean = false;
 
 
   constructor(
     private discountService: DiscountService,
     private toastr: ToastrService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private storage: AngularFireStorage,
   ) { }
 
   ngOnInit(): void {
@@ -50,37 +56,44 @@ export class AdminArticleComponent implements OnInit {
   initArticleForm(): void{
     this.articleForm = this.fb.group({
       title: [null,Validators.required],
-      text: [null,Validators.required],
+      body: [null,Validators.required],
       image: this.customImage
     })
   }
   loadArticle(): void{
     // this.adminArticle = this.discountService.getArticle();
     this.discountService.get().subscribe(data => {
-      if(data){
-        this.adminArticle = data;
+        console.log(data);
+      this.adminArticle = data;
+    },
+      error => {
+        console.log(error);
+        // this.toastr.error(error.message, error.title)
       }
-    })
+
+    )
   }
 
   createArticle(): void{
     // this.discountService.addArticle(this.articleForm.value);
-    if(this.title && this.text){
+    if(this.title && this.body){
       const newArticle ={
         title: this.title,
-        text: this.text,
+        body: this.body,
         image: this.customImage
       }
     }
     // this.discountService.create(this.articleForm.value).subscribe(() => {
     this.discountService.create(this.articleForm.value).subscribe(() => {
         this.initArticleForm();
+        this.loadArticle();
     },
       error => {
         console.log(error)
       })
 
     this.articleForm.reset();
+    this.imageStatus = false;
     this.discountService.get().subscribe(data => {
       if(data){
         this.adminArticle = data;
@@ -90,51 +103,71 @@ export class AdminArticleComponent implements OnInit {
   deleteArticle(article: IArticle): void{
     this.discountService.delete(article.id).subscribe(() => {
         this.initArticleForm();
+        this.loadArticle();
       },
       error => {
         console.log(error)
       });
-    this.discountService.get().subscribe(data => {
-      if(data){
-        this.adminArticle = data;
-      }
-    })
+
   }
 
   editArticle(article: IArticle): void {
     this.isEdit = true;
     this.articleId = article.id;
     this.title = article.title;
-    this.text = article.text;
+    this.body = article.body;
 
   }
 
   updateArticle(): void{
-    if(this.title && this.text){
+    if(this.title && this.body){
       const newArticle ={
         id: this.articleId,
-        title: this.title,
-        text: this.text,
-        image: this.customImage
+        title: this.articleForm.value.title,
+        body: this.articleForm.value.body,
+        image: this.articleForm.value.image
       }
       this.discountService.update(newArticle,this.articleId).subscribe(
 
         () => {
           this.initArticleForm();
+          this.loadArticle();
         },
         error => {
           console.log(error)
         });
-      this.discountService.get().subscribe(data => {
-        if(data){
-          this.adminArticle = data;
-        }
-      });
+
       this.title = '';
-      this.text='';
+      this.body='';
       this.isEdit = false;
       this.articleId!=null;
     }
 
+  }
+  uploadFile(event: any): void{
+      const file = event.target.files[0];
+      const filePath =`images/${file.name}`;
+      const task = this.storage.upload(filePath, file);
+      this.uploadPercent = task.percentageChanges() as Observable<number>;
+      task.then(image => {
+        this.storage.ref(`images/${image.metadata.name}`).getDownloadURL().subscribe(url =>{
+          this.image = url;
+          this.articleForm.patchValue({
+            image: this.image
+          })
+          this.imageStatus = true;
+          this.uploadPercent=null;
+        });
+      });
+  }
+  deleteFile(article?: IArticle): void{
+      const pathImage = article?.image || this.image;
+      this.storage.storage.refFromURL(pathImage).delete().then(
+        () => {
+          console.log('Image deleted');
+          this.image='';
+          this.imageStatus= false;
+        }
+      ).catch(err=> console.log(err));
   }
 }

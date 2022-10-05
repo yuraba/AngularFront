@@ -14,13 +14,16 @@ import { AdminNewComponent } from './admin/admin-new/admin-new.component';
 const routes: Routes = [
   {path: 'home', component:HomeComponent},
   {path: 'article', component:ArticlesComponent},
-  {path: 'article/:name', component:ArticleDetailsComponent},
+  {path: 'article/:name/:id', component:ArticleDetailsComponent},
   {path: 'news', component:NewsComponent},
+
   {path: 'admin', component:AdminComponent, children: [
       {path: '', pathMatch:'full', redirectTo:'Article'},
       {path: 'Article', component:AdminArticleComponent},
       {path: 'News', component:AdminNewComponent}
     ]},
+  {path: '', pathMatch:'full', redirectTo:'home'},
+  {path: '**', pathMatch:'full', redirectTo:'home'},
 ];
 @NgModule({
   declarations: [],

@@ -101,3 +101,6 @@ textarea {
   resize: none;
 }
 
+.wrapper{
+  margin: 10px;
+}
