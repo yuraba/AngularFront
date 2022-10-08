@@ -57,7 +57,7 @@ export class AdminArticleComponent implements OnInit {
     this.articleForm = this.fb.group({
       title: [null,Validators.required],
       body: [null,Validators.required],
-      image: this.customImage
+      image: this.image
     })
   }
   loadArticle(): void{
@@ -94,11 +94,11 @@ export class AdminArticleComponent implements OnInit {
 
     this.articleForm.reset();
     this.imageStatus = false;
-    this.discountService.get().subscribe(data => {
-      if(data){
-        this.adminArticle = data;
-      }
-    })
+    // this.discountService.get().subscribe(data => {
+    //   if(data){
+    //     this.adminArticle = data;
+    //   }
+    // })
   }
   deleteArticle(article: IArticle): void{
     this.discountService.delete(article.id).subscribe(() => {

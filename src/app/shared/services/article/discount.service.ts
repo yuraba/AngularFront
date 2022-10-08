@@ -55,6 +55,7 @@ export class DiscountService {
   }
 
   create(article: IArticle): Observable<IArticle>{
+    console.log(article);
     return this.http.post<IArticle>(this.url, article);
   }
 

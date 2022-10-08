@@ -10,12 +10,15 @@ import { NewsComponent } from './pages/news/news.component';
 import { AdminComponent } from './admin/admin.component';
 import { AdminArticleComponent } from './admin/admin-article/admin-article.component';
 import { AdminNewComponent } from './admin/admin-new/admin-new.component';
+import { AuthComponent } from './Auth/auth/auth.component';
 
 const routes: Routes = [
   {path: 'home', component:HomeComponent},
   {path: 'article', component:ArticlesComponent},
   {path: 'article/:name/:id', component:ArticleDetailsComponent},
   {path: 'news', component:NewsComponent},
+  {path: 'home', component:AuthComponent},
+
 
   {path: 'admin', component:AdminComponent, children: [
       {path: '', pathMatch:'full', redirectTo:'Article'},

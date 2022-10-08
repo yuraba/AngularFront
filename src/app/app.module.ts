@@ -33,6 +33,7 @@ import { AdminComponent } from './admin/admin.component';
 import { AdminArticleComponent } from './admin/admin-article/admin-article.component';
 import { AdminNewComponent } from './admin/admin-new/admin-new.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import { AuthComponent } from './Auth/auth/auth.component';
 
 
 
@@ -50,6 +51,7 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     AdminComponent,
     AdminArticleComponent,
     AdminNewComponent,
+    AuthComponent,
 
   ],
   imports: [
