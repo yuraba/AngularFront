@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {User} from "../../shared/models/user/user";
 import {AuthService} from "../../shared/services/user/auth.service";
 
+
+
+
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -10,6 +13,7 @@ import {AuthService} from "../../shared/services/user/auth.service";
 export class AuthComponent implements OnInit {
 
   user = new User();
+
 
   constructor(private authService: AuthService) { }
 
@@ -23,6 +27,7 @@ export class AuthComponent implements OnInit {
     this.authService.login(user).subscribe((token: string)=> {
       localStorage.setItem('authToken', token);
     });
+
   }
 
   getme(){

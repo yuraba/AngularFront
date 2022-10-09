@@ -55,16 +55,19 @@ export class AdminArticleComponent implements OnInit {
   }
   initArticleForm(): void{
     this.articleForm = this.fb.group({
-      title: [null,Validators.required],
-      body: [null,Validators.required],
+      title: ['',Validators.required],
+      body: ['',Validators.required],
       image: this.image
     })
   }
   loadArticle(): void{
     // this.adminArticle = this.discountService.getArticle();
     this.discountService.get().subscribe(data => {
-        console.log(data);
+
       this.adminArticle = data;
+        console.log(this.adminArticle);
+        console.log(data)
+
     },
       error => {
         console.log(error);
@@ -87,6 +90,7 @@ export class AdminArticleComponent implements OnInit {
     this.discountService.create(this.articleForm.value).subscribe(() => {
         this.initArticleForm();
         this.loadArticle();
+
     },
       error => {
         console.log(error)
@@ -122,7 +126,7 @@ export class AdminArticleComponent implements OnInit {
   updateArticle(): void{
     if(this.title && this.body){
       const newArticle ={
-        id: this.articleId,
+        Id: this.articleId,
         title: this.articleForm.value.title,
         body: this.articleForm.value.body,
         image: this.articleForm.value.image
@@ -153,7 +157,7 @@ export class AdminArticleComponent implements OnInit {
         this.storage.ref(`images/${image.metadata.name}`).getDownloadURL().subscribe(url =>{
           this.image = url;
           this.articleForm.patchValue({
-            image: this.image
+            Image: this.image
           })
           this.imageStatus = true;
           this.uploadPercent=null;

@@ -51,18 +51,20 @@ export class DiscountService {
   }
 
   get(): Observable<Array<IArticle>> {
+
     return this.http.get<Array<IArticle>>(this.url);
   }
 
   create(article: IArticle): Observable<IArticle>{
-    console.log(article);
+
     return this.http.post<IArticle>(this.url, article);
   }
 
   delete(id: number): Observable<IArticle>{
     return this.http.delete<IArticle>(`${this.url}/${id}`);
   }
-  update(article: IArticle, id:number): Observable<IArticle>{
+
+  update(article: { image: any; Id: number; title: any; body: any }, id: number): Observable<IArticle>{
     return this.http.put<IArticle>(`${this.url}/${id}`,article);
   }
 

@@ -1,5 +1,7 @@
 export interface IArticle{
   id: number;
+  Id?: number;
+
   title: string;
   body: string;
   image:string;

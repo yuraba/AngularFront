@@ -32,7 +32,9 @@ export class ArticlesComponent implements OnInit {
     this.discountService.get().subscribe(
       data =>{
         if(data){
+
           this.userArticles = data;
+
         }
       },
       error =>

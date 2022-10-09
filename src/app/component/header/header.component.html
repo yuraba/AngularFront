@@ -2,5 +2,5 @@
   <a  [routerLink]="['/home']" routerLinkActive="active">MyBlog</a>
   <a [routerLink]="['/article']" routerLinkActive="active">Статті</a>
   <a [routerLink]="['/news']" routerLinkActive="active">Новини</a>
-  <a  [routerLink]="['/admin']" routerLinkActive="active" *ngIf="mockedUser.user.role === 1">Адмін</a>
+  <a  [routerLink]="['/admin']" routerLinkActive="active" *ngIf="!!value" >Адмін</a>
 </div>

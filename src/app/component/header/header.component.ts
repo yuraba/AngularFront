@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {MockedUser} from "../../mock-data/mocked-user";
-import {User} from "../../shared/models/user/user";
-import { Roles } from "../../mock-data/roles";
+
+
+
 
 @Component({
   selector: 'app-header',
@@ -9,20 +9,18 @@ import { Roles } from "../../mock-data/roles";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  public  mockedUser = MockedUser;
-  public  user!: User;
-  public  role!: Roles;
+
+  value = localStorage.getItem('authToken');
 
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
-    this.bb();
+
   }
 
-  bb(): void{
-    console.log(this.user.role)
-  }
+
 
 
 }
