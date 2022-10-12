@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ReloadService} from "../../shared/services/reload/reload.service";
 
 
 
@@ -13,11 +14,16 @@ export class HeaderComponent implements OnInit {
   value = localStorage.getItem('authToken');
 
 
-  constructor() {
-  }
+  constructor() {}
 
   ngOnInit(): void {
 
+  }
+
+
+  exit() {
+    localStorage.clear();
+    window.location.reload();
   }
 
 

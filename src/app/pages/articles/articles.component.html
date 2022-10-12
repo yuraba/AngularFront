@@ -1,15 +1,17 @@
 
 
-
+<app-search (searchTextChanged)="onSearchTextEntered($event)" ></app-search>
 <div class="container" *ngFor="let atr of userArticles">
-  <div class="wrapper">
+  <div class="wrapper" *ngIf="searchText === '' || atr.title.toLowerCase().includes(searchText)">
   <mat-card class="example-card">
     <mat-card-header>
       <div mat-card-avatar class="eader-image"></div>
       <mat-card-title>{{atr.title}}</mat-card-title>
       <mat-card-subtitle></mat-card-subtitle>
     </mat-card-header>
-    <img class="mat-card-image" [src]="atr.image" alt="Photo of a Shiba Inu" [routerLink]="['/article', atr.title, atr.id]">
+    <div>
+    <img  class="mat-card-image" [src]="atr.image" alt="Photo of a Shiba Inu" [routerLink]="['/article', atr.title, atr.id]">
+    </div>
     <mat-card-content >
       <p>
         {{atr.body | slice:0:500}}...

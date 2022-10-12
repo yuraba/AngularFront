@@ -19,7 +19,5 @@ export class AuthService {
       responseType:'text',
     });
   }
-  public getMe(): Observable<string> {
-    return this.http.get<string>('http://localhost:5251/auth/Auth');
-  }
+
 }

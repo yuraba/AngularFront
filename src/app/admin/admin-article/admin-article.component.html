@@ -10,8 +10,10 @@
   <div>
     <textarea formControlName="body" id="text"  placeholder="Write something.." [value]="body" ></textarea>
   </div>
+  <div class="col-25">
+    <label for="subject">Image</label>
+  </div>
   <form action="/action_page.php">
-
     <div *ngIf="!imageStatus">
       <input (change)="uploadFile($event)" type="file" id="myFile" name="filename">
 

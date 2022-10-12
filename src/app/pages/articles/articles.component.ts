@@ -4,6 +4,7 @@ import {IArticle} from "../../shared/models/article/article.models";
 import {ToastrService} from "ngx-toastr";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {MatCardModule} from '@angular/material/card';
+import {Subject, takeUntil} from "rxjs";
 
 
 @Component({
@@ -16,6 +17,8 @@ import {MatCardModule} from '@angular/material/card';
 export class ArticlesComponent implements OnInit {
 
   public userArticles: Array<IArticle> = [];
+  private readonly unsubscribe$ = new Subject<void>();
+
 
 
   constructor(
@@ -26,10 +29,18 @@ export class ArticlesComponent implements OnInit {
   ngOnInit(): void {
     this.loadArticle();
   }
+
+  searchText: string = '';
+
+  onSearchTextEntered(searchValue: string){
+    this.searchText = searchValue;
+    console.log(this.searchText)
+  }
+
   loadArticle(): void {
       // this.userArticles = this.discountService.getArticle();
     // console.log(this.userArticles);
-    this.discountService.get().subscribe(
+    this.discountService.get().pipe(takeUntil(this.unsubscribe$)).subscribe(
       data =>{
         if(data){
 

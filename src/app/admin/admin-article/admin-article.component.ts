@@ -4,7 +4,7 @@ import {IArticle} from "../../shared/models/article/article.models";
 import {ToastrService} from "ngx-toastr";
 import {FormBuilder, FormGroup, Validator, Validators} from "@angular/forms";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
-import {Observable} from "rxjs";
+import {Observable, Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-admin-article',
@@ -40,6 +40,7 @@ export class AdminArticleComponent implements OnInit {
   image: string = '';
   public uploadPercent: Observable<number> | undefined | null;
   imageStatus: boolean = false;
+  private readonly unsubscribe$ = new Subject<void>();
 
 
   constructor(
@@ -61,20 +62,13 @@ export class AdminArticleComponent implements OnInit {
     })
   }
   loadArticle(): void{
-    // this.adminArticle = this.discountService.getArticle();
-    this.discountService.get().subscribe(data => {
-
+    this.discountService.get().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
       this.adminArticle = data;
-        console.log(this.adminArticle);
-        console.log(data)
-
     },
       error => {
         console.log(error);
         // this.toastr.error(error.message, error.title)
-      }
-
-    )
+      })
   }
 
   createArticle(): void{
@@ -87,7 +81,7 @@ export class AdminArticleComponent implements OnInit {
       }
     }
     // this.discountService.create(this.articleForm.value).subscribe(() => {
-    this.discountService.create(this.articleForm.value).subscribe(() => {
+    this.discountService.create(this.articleForm.value).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
         this.initArticleForm();
         this.loadArticle();
 
@@ -105,7 +99,7 @@ export class AdminArticleComponent implements OnInit {
     // })
   }
   deleteArticle(article: IArticle): void{
-    this.discountService.delete(article.id).subscribe(() => {
+    this.discountService.delete(article.id).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
         this.initArticleForm();
         this.loadArticle();
       },
@@ -131,7 +125,7 @@ export class AdminArticleComponent implements OnInit {
         body: this.articleForm.value.body,
         image: this.articleForm.value.image
       }
-      this.discountService.update(newArticle,this.articleId).subscribe(
+      this.discountService.update(newArticle,this.articleId).pipe(takeUntil(this.unsubscribe$)).subscribe(
 
         () => {
           this.initArticleForm();
@@ -154,10 +148,10 @@ export class AdminArticleComponent implements OnInit {
       const task = this.storage.upload(filePath, file);
       this.uploadPercent = task.percentageChanges() as Observable<number>;
       task.then(image => {
-        this.storage.ref(`images/${image.metadata.name}`).getDownloadURL().subscribe(url =>{
+        this.storage.ref(`images/${image.metadata.name}`).getDownloadURL().pipe(takeUntil(this.unsubscribe$)).subscribe(url =>{
           this.image = url;
           this.articleForm.patchValue({
-            Image: this.image
+            image: this.image
           })
           this.imageStatus = true;
           this.uploadPercent=null;
@@ -174,4 +168,5 @@ export class AdminArticleComponent implements OnInit {
         }
       ).catch(err=> console.log(err));
   }
+
 }
