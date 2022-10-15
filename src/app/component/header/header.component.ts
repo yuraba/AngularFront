@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ReloadService} from "../../shared/services/reload/reload.service";
+import {GlobalService} from "../../shared/services/global/global.service";
 
 
 
@@ -11,22 +12,20 @@ import {ReloadService} from "../../shared/services/reload/reload.service";
 })
 export class HeaderComponent implements OnInit {
 
-  value = localStorage.getItem('authToken');
+  localStorage?: boolean;
 
 
-  constructor() {}
+  constructor(private globalService:GlobalService) {}
 
   ngOnInit(): void {
-
+    this.globalService.selectedProduct$.subscribe((value) => {
+      this.localStorage = value;
+    });
   }
 
 
   exit() {
     localStorage.clear();
-    window.location.reload();
+    this.globalService.setProduct(false)
   }
-
-
-
-
 }

@@ -1,1 +1,27 @@
-<p>news works!</p>
+<div class="NewArticles">New Articles</div>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Title</th>
+    <th>Text</th>
+    <th>Image</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let art of adminArticle.reverse().slice(0,3); index as i">
+    <td>{{i+1}}</td>
+    <td>{{art.title}}</td>
+    <td>{{art.body | slice:0:50}}...</td>
+    <td><img [src]="art.image" width="80px"></td>
+    <td>
+      <button  mat-button [routerLink]="['/article', art.title, art.id]">Read More</button>
+
+
+    </td>
+
+  </tr>
+  </tbody>
+</table>

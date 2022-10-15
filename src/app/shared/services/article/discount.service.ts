@@ -55,7 +55,11 @@ export class DiscountService {
     return this.http.get<Array<IArticle>>(this.url);
   }
 
-  create(article: IArticle): Observable<IArticle>{
+  getWithParametr(name: string | undefined): Observable<Array<IArticle>> {
+    return this.http.get<Array<IArticle>>(`http://localhost:5251/user/${name}`);
+  }
+
+  create(article: { image: string; title: string; body: string; IsApproved: string }): Observable<IArticle>{
 
     return this.http.post<IArticle>(this.url, article);
   }

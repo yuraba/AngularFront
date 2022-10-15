@@ -5,6 +5,8 @@ import {ToastrService} from "ngx-toastr";
 import {FormBuilder, FormGroup, Validator, Validators} from "@angular/forms";
 import {AngularFireStorage} from "@angular/fire/compat/storage";
 import {Observable, Subject, takeUntil} from "rxjs";
+import {User} from "../../shared/models/user/user";
+import {GlobalService} from "../../shared/services/global/global.service";
 
 @Component({
   selector: 'app-admin-article',
@@ -41,6 +43,9 @@ export class AdminArticleComponent implements OnInit {
   public uploadPercent: Observable<number> | undefined | null;
   imageStatus: boolean = false;
   private readonly unsubscribe$ = new Subject<void>();
+  user?: User;
+  isAdmin:boolean = false;
+  isApproved:string = 'pending';
 
 
   constructor(
@@ -48,10 +53,18 @@ export class AdminArticleComponent implements OnInit {
     private toastr: ToastrService,
     private fb: FormBuilder,
     private storage: AngularFireStorage,
-  ) { }
+    private globalService:GlobalService
+  ) {
+  }
 
   ngOnInit(): void {
     this.initArticleForm();
+    this.globalService.selectedUser$.pipe(takeUntil(this.unsubscribe$)).subscribe((value) => {
+      this.user = value;
+    });
+    if (this.user?.Role === 'Admin'){
+      this.isAdmin = true
+    }
     this.loadArticle();
   }
   initArticleForm(): void{
@@ -62,30 +75,44 @@ export class AdminArticleComponent implements OnInit {
     })
   }
   loadArticle(): void{
-    this.discountService.get().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
-      this.adminArticle = data;
-    },
-      error => {
-        console.log(error);
-        // this.toastr.error(error.message, error.title)
-      })
+    if (this.isAdmin){
+      this.discountService.get().pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+          this.adminArticle = data;
+        },
+        error => {
+          console.log(error);
+        })
+    } else{
+
+      this.discountService.getWithParametr(this.user?.Username).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
+          console.log(data)
+          this.adminArticle = data;
+        },
+        error => {
+          console.log(error);
+        })
+    }
   }
 
   createArticle(): void{
-    // this.discountService.addArticle(this.articleForm.value);
-    if(this.title && this.body){
-      const newArticle ={
-        title: this.title,
-        body: this.body,
-        image: this.customImage
-      }
+
+    if (this.isAdmin){
+      this.isApproved = 'approved'
     }
-    // this.discountService.create(this.articleForm.value).subscribe(() => {
-    this.discountService.create(this.articleForm.value).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+    const newArticle ={
+      title: this.articleForm.value.title,
+      body: this.articleForm.value.body,
+      image: this.articleForm.value.image,
+      IsApproved:this.isApproved,
+      CreatedBy: this.user?.Username
+    }
+
+
+    this.discountService.create(newArticle).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
         this.initArticleForm();
         this.loadArticle();
 
-    },
+      },
       error => {
         console.log(error)
       })
@@ -114,7 +141,46 @@ export class AdminArticleComponent implements OnInit {
     this.articleId = article.id;
     this.title = article.title;
     this.body = article.body;
+  }
 
+  approve(article: IArticle): void{
+    const newArticle ={
+      Id: article.id,
+      title: article.title,
+      body: article.body,
+      image: this.articleForm.value.image,
+      IsApproved: 'approved'
+    }
+
+    this.discountService.update(newArticle,this.articleId).pipe(takeUntil(this.unsubscribe$)).subscribe(
+
+      () => {
+        this.initArticleForm();
+        this.loadArticle();
+      },
+      error => {
+        console.log(error)
+      });
+  }
+
+  decline(article: IArticle): void{
+    const newArticle ={
+      Id: article.id,
+      title: article.title,
+      body: article.body,
+      image: this.articleForm.value.image,
+      IsApproved: 'declined'
+    }
+
+    this.discountService.update(newArticle,this.articleId).pipe(takeUntil(this.unsubscribe$)).subscribe(
+
+      () => {
+        this.initArticleForm();
+        this.loadArticle();
+      },
+      error => {
+        console.log(error)
+      });
   }
 
   updateArticle(): void{
@@ -123,7 +189,9 @@ export class AdminArticleComponent implements OnInit {
         Id: this.articleId,
         title: this.articleForm.value.title,
         body: this.articleForm.value.body,
-        image: this.articleForm.value.image
+        image: this.articleForm.value.image,
+        IsApproved:this.isApproved,
+        CreatedBy: this.user?.Username
       }
       this.discountService.update(newArticle,this.articleId).pipe(takeUntil(this.unsubscribe$)).subscribe(
 

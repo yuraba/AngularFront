@@ -1,57 +1,67 @@
 <div class="wrapper">
-<form [formGroup]="articleForm" >
-  <div>
-    <label for="Title">Title</label>
-    <input formControlName="title" type="text" name="search" [value]="title" >
-  </div>
-  <div class="col-25">
-    <label for="subject">Text</label>
-  </div>
-  <div>
-    <textarea formControlName="body" id="text"  placeholder="Write something.." [value]="body" ></textarea>
-  </div>
-  <div class="col-25">
-    <label for="subject">Image</label>
-  </div>
-  <form action="/action_page.php">
-    <div *ngIf="!imageStatus">
-      <input (change)="uploadFile($event)" type="file" id="myFile" name="filename">
+  <form [formGroup]="articleForm" >
+    <div>
+      <label for="Title">Title</label>
+      <input formControlName="title" type="text" name="search" [value]="title" >
+    </div>
+    <div class="col-25">
+      <label for="subject">Text</label>
+    </div>
+    <div>
+      <textarea formControlName="body" id="text"  placeholder="Write something.." [value]="body" ></textarea>
+    </div>
+    <div class="col-25">
+      <label for="subject">Image</label>
+    </div>
+    <form action="/action_page.php">
+      <div *ngIf="!imageStatus">
+        <input (change)="uploadFile($event)" type="file" id="myFile" name="filename">
 
-      <mat-progress-bar mode="determinate" [style.width]="(uploadPercent | async)"></mat-progress-bar>
-    </div>
-    <div *ngIf="imageStatus">
-      <img width="100px" [src]="image" alt="" >
-      <button (click)="deleteFile()" type="submit" class="button delete">delete</button>
-    </div>
+        <mat-progress-bar mode="determinate" [style.width]="(uploadPercent | async)"></mat-progress-bar>
+      </div>
+      <div *ngIf="imageStatus">
+        <img width="100px" [src]="image" alt="" >
+        <button (click)="deleteFile()" type="submit" class="button delete">delete</button>
+      </div>
+    </form>
+    <button *ngIf="!isEdit && isAdmin" (click)="createArticle()" [disabled]="articleForm.invalid"  type="submit" class="add">Add</button>
+    <button *ngIf="!isEdit && !isAdmin" (click)="createArticle()" [disabled]="articleForm.invalid"  type="submit" class="add">Propose</button>
+
+    <button *ngIf="isEdit"   (click)="updateArticle()" type="submit" class="add">update</button>
   </form>
-  <button *ngIf="!isEdit" (click)="createArticle()" [disabled]="articleForm.invalid"  type="submit" class="add">add</button>
-
-  <button *ngIf="isEdit"   (click)="updateArticle()" type="submit" class="add">update</button>
-</form>
-<table class="table">
-  <thead>
+  <table class="table">
+    <thead>
     <tr>
       <th>#</th>
       <th>Title</th>
       <th>Text</th>
       <th>Image</th>
       <th>Actions</th>
+      <th>Status</th>
+      <th *ngIf="isAdmin">Created by</th>
     </tr>
-  </thead>
-  <tbody>
-      <tr *ngFor="let art of adminArticle; index as i">
-          <td>{{i+1}}</td>
-          <td>{{art.title}}</td>
-          <td>{{art.body | slice:0:50}}...</td>
-          <td><img [src]="art.image" width="80px"></td>
-          <td>
+    </thead>
+    <tbody>
+    <tr *ngFor="let art of adminArticle; index as i">
+      <td>{{i+1}}</td>
+      <td>{{art.title}}</td>
+      <td>{{art.body | slice:0:50}}...</td>
+      <td><img [src]="art.image" width="80px"></td>
+      <td>
+        <button *ngIf="art.isApproved ==='pending'" (click)="editArticle(art)" type="submit" class="button edit">edit</button>
+        <button *ngIf="art.isApproved ==='pending' || isAdmin" (click)="deleteArticle(art)"  type="submit" class="button delete">delete</button>
+      </td>
+      <td>
+        {{art.isApproved}}
+        <button *ngIf="art.isApproved ==='pending' && isAdmin" (click)="approve(art)" type="submit" class="button edit">Appove</button>
+        <button *ngIf="art.isApproved ==='pending' && isAdmin" (click)="decline(art)" type="submit" class="button delete">Decline</button>
+      </td>
+      <td *ngIf="isAdmin">
+        {{art.createdBy}}
+      </td>
 
-            <button (click)="editArticle(art)" type="submit" class="button edit">edit</button>
-            <button (click)="deleteArticle(art)" type="submit" class="button delete">delete</button>
+    </tr>
+    </tbody>
 
-          </td>
-
-      </tr>
-  </tbody>
-</table>
+  </table>
 </div>

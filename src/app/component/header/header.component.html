@@ -2,7 +2,7 @@
   <a  [routerLink]="['/home']" routerLinkActive="active">MyBlog</a>
   <a [routerLink]="['/article']" routerLinkActive="active">Статті</a>
   <a [routerLink]="['/news']" routerLinkActive="active">Новини</a>
-  <a  [routerLink]="['/admin']" routerLinkActive="active" *ngIf="!!value" >Адмін</a>
-  <a  [routerLink]="['/homes']" routerLinkActive="active" *ngIf="!value" >Зареєструватись</a>
-  <button [routerLink]="['/home']" (click)="exit()"  *ngIf="!!value" mat-button color="primary">exit</button>
+  <a  [routerLink]="['/admin']" routerLinkActive="active" *ngIf="!!localStorage" >Адмін</a>
+  <a  [routerLink]="['/login']" routerLinkActive="active" *ngIf="!localStorage" >Зареєструватись</a>
+  <a [routerLink]="['/home']" (click)="exit()"  *ngIf="!!localStorage">exit</a>
 </div>

@@ -11,7 +11,12 @@ import {Subject, takeUntil} from "rxjs";
 })
 export class ArticleDetailsComponent implements OnInit {
 
-  article!: IArticle;
+  article: IArticle = {
+    id: 1,
+    body:'',
+    title:'',
+    image:''
+  };
   private readonly unsubscribe$ = new Subject<void>();
 
 
@@ -29,7 +34,9 @@ export class ArticleDetailsComponent implements OnInit {
     const id = Number(this.activatedRoute.snapshot.paramMap.get('id'));
     this.articleService.getOneArticle(id).pipe(takeUntil(this.unsubscribe$)).subscribe(data => {
         this.article = data;
+        console.log(data)
     });
+
   }
 
 }

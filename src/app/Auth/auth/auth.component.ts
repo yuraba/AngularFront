@@ -1,16 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from "../../shared/models/user/user";
 import {AuthService} from "../../shared/services/user/auth.service";
-import {DiscountService} from "../../shared/services/article/discount.service";
-import {IArticle} from "../../shared/models/article/article.models";
 import {Subject, takeUntil} from "rxjs";
 import {Router} from "@angular/router";
-import {ReloadService} from "../../shared/services/reload/reload.service";
-
-
-
-
-
+import {GlobalService} from "../../shared/services/global/global.service";
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -21,30 +14,37 @@ export class AuthComponent implements OnInit {
   private readonly unsubscribe$ = new Subject<void>();
 
 
-  constructor(private authService: AuthService,
-
-
-
-
-  ) {
+  constructor(private authService: AuthService, private router:Router, private globalService: GlobalService) {
   }
 
   ngOnInit(): void {
   }
 
   register(user: User) {
+    if (this.router.url === '/login/admin'){
+      user.Role = 'Admin'
+    }
+    else {
+      user.Role = 'User'
+    }
     this.authService.register(user).pipe(takeUntil(this.unsubscribe$)).subscribe();
   }
 
   login(user: User) {
     this.authService.login(user).pipe(takeUntil(this.unsubscribe$)).subscribe((token: string) => {
-      localStorage.setItem('authToken', token);
+      localStorage.setItem('authToken', JSON.stringify({
+        token
+      }));
+      this.router.navigate(['/home']);
 
-
-
+      const receivedToken = localStorage.getItem('authToken');
+      if (receivedToken){
+        const parsedToken = JSON.parse(receivedToken);
+        if (parsedToken) {
+          this.globalService.setProduct(true);
+          this.globalService.setUser(user)
+        }
+      }
     })
   }
-
-
-
 }

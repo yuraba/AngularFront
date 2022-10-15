@@ -1,7 +1,8 @@
 export interface IArticle{
   id: number;
   Id?: number;
-
+  isApproved?: 'approved' | 'pending' | 'declined';
+  createdBy?:string;
   title: string;
   body: string;
   image:string;
