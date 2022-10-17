@@ -4,5 +4,11 @@
   <a [routerLink]="['/news']" routerLinkActive="active">Новини</a>
   <a  [routerLink]="['/admin']" routerLinkActive="active" *ngIf="!!localStorage" >Адмін</a>
   <a  [routerLink]="['/login']" routerLinkActive="active" *ngIf="!localStorage" >Зареєструватись</a>
-  <a [routerLink]="['/home']" (click)="exit()"  *ngIf="!!localStorage">exit</a>
+  <mat-form-field appearance="fill" class="matFormField" *ngIf="!!localStorage">
+    <mat-label class="label">Профіль</mat-label>
+    <mat-select >
+      <mat-option (click)="openModal()" > Редагувати </mat-option>
+      <mat-option (click)="exit()"   >Вихід</mat-option>
+    </mat-select>
+  </mat-form-field>
 </div>

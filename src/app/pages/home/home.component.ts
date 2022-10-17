@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
 
     return this.email.hasError('email') ? 'Not a valid email' : '';
   }
+
 }
 
 

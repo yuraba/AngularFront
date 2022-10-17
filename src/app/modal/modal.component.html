@@ -1,0 +1,29 @@
+<div id="modal-content-wrapper">
+    <header id="modal-header">
+        <h1 class="modal-title">Welcome {{user.username}} !</h1>
+        <img [src]="user.image" width="80px">
+    </header>
+    <form [formGroup]="articleForm" class="userform" >
+        <div class="modal-title" >
+            <label for="Title">Username</label>
+            <input formControlName="title" type="text" name="search" [value]="user.username" >
+        </div>
+        <form action="/action_page.php" class="photoupload">
+            <div *ngIf="!imageStatus" >
+                <input (change)="uploadFile($event)" class="uploadFile" type="file" id="myFile" name="filename">
+
+                <mat-progress-bar mode="determinate" [style.width]="(uploadPercent | async)"></mat-progress-bar>
+            </div>
+            <div *ngIf="imageStatus" >
+                <img width="100px" [src]="image" alt="" >
+                <button class="deleteFile" (click)="deleteFile()" type="submit" class="button delete">delete</button>
+            </div>
+        </form>
+    </form>
+    <footer id="modal-footer">
+        <button mat-raised-button class="modal-cancel-button" (click)="actionFunction()">Logout</button>
+        <button mat-raised-button class="modal-cancel-button" (click)="closeModal()">Go back</button>
+        <button mat-raised-button class="modal-cancel-button" (click)="updateUser()">Update User</button>
+    </footer>
+
+</div>

@@ -141,6 +141,7 @@ export class AdminArticleComponent implements OnInit {
     this.articleId = article.id;
     this.title = article.title;
     this.body = article.body;
+    this.image = article.image;
   }
 
   approve(article: IArticle): void{
@@ -148,7 +149,7 @@ export class AdminArticleComponent implements OnInit {
       Id: article.id,
       title: article.title,
       body: article.body,
-      image: this.articleForm.value.image,
+      image: article.image,
       IsApproved: 'approved'
     }
 
@@ -168,7 +169,7 @@ export class AdminArticleComponent implements OnInit {
       Id: article.id,
       title: article.title,
       body: article.body,
-      image: this.articleForm.value.image,
+      image: article.image,
       IsApproved: 'declined'
     }
 
@@ -235,6 +236,11 @@ export class AdminArticleComponent implements OnInit {
           this.imageStatus= false;
         }
       ).catch(err=> console.log(err));
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

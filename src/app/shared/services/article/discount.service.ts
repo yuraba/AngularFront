@@ -68,7 +68,7 @@ export class DiscountService {
     return this.http.delete<IArticle>(`${this.url}/${id}`);
   }
 
-  update(article: { image: any; Id: number; title: any; body: any }, id: number): Observable<IArticle>{
+  update(article: { image: string; Id: number; title: string; body: string }, id: number): Observable<IArticle>{
     return this.http.put<IArticle>(`${this.url}/${id}`,article);
   }
 

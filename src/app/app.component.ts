@@ -30,7 +30,8 @@ export class AppComponent implements OnInit{
         this.globalService.setProduct(true);
         this.globalService.setUser({
           Role: tokenInfo.role,
-          Username: tokenInfo.username
+          Username: tokenInfo.username,
+          Id: tokenInfo.user_id
         })
       }
     }

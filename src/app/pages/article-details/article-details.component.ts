@@ -38,5 +38,9 @@ export class ArticleDetailsComponent implements OnInit {
     });
 
   }
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 
 }

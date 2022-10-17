@@ -35,6 +35,9 @@ import { AdminNewComponent } from './admin/admin-new/admin-new.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import { AuthComponent } from './Auth/auth/auth.component';
 import { SearchComponent } from './search/search/search.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import {MatSelectModule} from "@angular/material/select";
+import {ModalComponent} from "./modal/modal.component";
 
 
 
@@ -54,6 +57,7 @@ import { SearchComponent } from './search/search/search.component';
     AdminNewComponent,
     AuthComponent,
     SearchComponent,
+    ModalComponent,
 
   ],
   imports: [
@@ -76,6 +80,8 @@ import { SearchComponent } from './search/search/search.component';
     AngularFireAuthModule,
     AngularFirestoreModule,
     MatProgressBarModule,
+    MatSelectModule,
+    MatDialogModule,
 
 
   ],

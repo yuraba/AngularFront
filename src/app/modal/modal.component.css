@@ -1,0 +1,65 @@
+#modal-content-wrapper {
+    width: 100%;
+    height: 150%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+}
+
+.modal-title {
+    display: flex;
+    justify-content: center;
+    font-size: 22px;
+}
+
+#modal-footer {
+    justify-self: right;
+    align-self: center;
+}
+
+#modal-action-button {
+    margin-right: 30px;
+    background-color: #f5efef;
+}
+
+.modal-cancel-button {
+    background-color: #98f374;
+    margin-right: 20px;
+    margin-left: 20px;
+    margin-top: 50px;
+}
+#userform{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+.photoupload{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    margin-top: 30px;
+
+}
+.deleteFile{
+    background-color: #f6023c;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    margin: 5px;
+}
+.uploadFile{
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    margin: 5px;
+}
+#modal-header{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+}

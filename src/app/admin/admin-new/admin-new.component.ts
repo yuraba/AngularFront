@@ -31,4 +31,8 @@ export class AdminNewComponent implements OnInit {
         // this.toastr.error(error.message, error.title)
       })
   }
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
 }
